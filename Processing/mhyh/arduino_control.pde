@@ -1,22 +1,21 @@
 import processing.serial.*; 
 
 Serial port; 
-String val;
+String serial_val;
 
 boolean contact = false;
 char handshake_char = 'A';
 char start_char = 's';
 char end_char = 'e';
-int connection_timeout = 5000;
 long previous_time = 0;
 
 void serialEvent(Serial port) {
- val = port.readStringUntil('\n');
- if (val != null) {
-  val = trim(val);
-  println_log(val);
+ serial_val = port.readStringUntil('\n');
+ if (serial_val != null) {
+  serial_val = trim(serial_val);
+  println_log(serial_val);
   if (contact == false) { //Try to talk to controller
-    if (val.equals("A")) {
+    if (serial_val.equals("A")) {
       port.clear();
       contact = true;
       port.write(handshake_char);
@@ -31,13 +30,18 @@ void serialEvent(Serial port) {
  }
 }
 
+void do_data_units() {
+  bpm = (float)1000000 * 60/bpm; //microseconds
+}
+
 void send_start_packet() {
+      do_data_units();
+  
       println_log("**************************");
       println_log("* SENDING ARDUINO SETTINGS:");
-      println_log("*   frequency_a: " + frequency_a );
+      println_log("*   bpm: " + bpm );
       println_log("*   amplitude_a: " + amplitude_a );
       println_log("*   interval_a: " + interval_a );
-      println_log("*   frequency_v: " + frequency_v );
       println_log("*   amplitude_v: " + amplitude_v);
       println_log("*   interval_v: " + interval_v );
       println_log("*   av_interval: " + av_interval );
@@ -47,13 +51,11 @@ void send_start_packet() {
       port.write(
         start_char + 
         "|" +
-        str(frequency_a)  +
+        str(bpm)  +
         "|" +
         str(amplitude_a) +
         "|" +
         str(interval_a) +
-        "|" +
-        str(frequency_v) +
         "|" +
         str(amplitude_v) +
         "|" +
