@@ -1,0 +1,20 @@
+tester_name, generator_serial, result, time_elapsed_over_test, test_name, notes
+fadsjf,fadfsae,passed,9521,Base Atrial Rate,
+fadsjf,fadfsae,failed,1623,Base Ventricular Rate,
+fadsjf,fadfsae,failed,1613,Atrial Pulse Voltage,
+fadsjf,fadfsae,passed,1628,Ventricular Pulse Voltage,
+fadsjf,fadfsae,passed,2144,Atrial Pulse Width,
+fadsjf,fadfsae,failed,1511,Ventricular Pulse Width,
+fadsjf,fadfsae,passed,1388,Atrial Sensitivity,
+fadsjf,fadfsae,failed,1529,Ventricular Sensitivity,
+fadsjf,fadfsae,passed,1577,AV/PV Delay,
+fadsjf,fadfsae,passed,2576,Ventricular Refractory Period,
+fadsjf,fadfsae,passed,3859,PVARP,dfasdfasdf
+fadsjf,fadfsae,failed,1922,Max Sensor Rate,
+fadsjf,fadfsae,passed,3214,Max Tracking Rate,dfsaf
+fadsjf,fadfsae,passed,3862,null,df
+
+
+
+
+TOTAL TEST TIME MS: 38118

@@ -1,0 +1,18 @@
+tester_name, generator_serial, result, time_elapsed_over_test, test_name, notes
+readf,dfadfer,passed,10205,Base Atrial Rate,ersadf
+readf,dfadfer,failed,2001,Base Ventricular Rate,f
+readf,dfadfer,failed,1297,Atrial Pulse Voltage,
+readf,dfadfer,failed,1464,Ventricular Pulse Voltage,
+readf,dfadfer,passed,1601,Atrial Pulse Width,
+readf,dfadfer,failed,3166,Ventricular Pulse Width,
+readf,dfadfer,passed,2093,Atrial Sensitivity,
+readf,dfadfer,failed,1762,Ventricular Sensitivity,
+readf,dfadfer,failed,2123,AV/PV Delay,
+readf,dfadfer,failed,1703,Ventricular Refractory Period,
+readf,dfadfer,failed,1535,PVARP,
+readf,dfadfer,failed,1750,Max Sensor Rate,
+
+
+
+
+TOTAL TEST TIME MS: 33527
