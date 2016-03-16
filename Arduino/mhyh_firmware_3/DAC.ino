@@ -53,11 +53,12 @@ int calc(int av_interval, int va_interval, int bpm, int a_width, int v_width){
 }
 
 bool has_beat_a = false;
+
 void VA_test() {
   unsigned long v_start = interval_a+av_interval;
   unsigned long a_restart = v_start+interval_v+va_interval;
 
-  if (timeSinceLastA_us > a_restart) {
+  if (timeSinceLastA_us >= a_restart && has_beat_a == false) {
     timeSinceLastA_us = 0;
     doPC69(DA); //busy loop for interval_a
     has_beat_a = true;
@@ -104,8 +105,8 @@ void checkAndDoPulse(){
 
 // Top level PC69 Generator Function
 void doPC69(int cur_DAC) { 
-  on2 = !on2;
-  digitalWrite(p2, on2);  
+  //on2 = !on2;
+  //digitalWrite(p2, on2);  
   DAC = cur_DAC;
   if (cur_DAC == DA) {
      amp = amplitude_a;
@@ -115,13 +116,16 @@ void doPC69(int cur_DAC) {
      width = interval_v;    
   }
   //rampUpTime = width;
-  rampDownTime = (2 * width) / 15;
-  rampUpTime = (13 * width) / 15;
+  rampDownTime = 2000;
+  rampUpTime = 13000;
+  //rampDownTime = (2 * width) / 15;
+  //rampUpTime = (13 * width) / 15;
   //Serial.print("rampDownTime: ");
   //Serial.println(String(rampDownTime));
   //Serial.print("rampUpTime: ");
   //Serial.println(String(rampUpTime));
   doRampDown(amp, rampDownTime);
+  updateDACVoltage(0);
   doRampUp(amp, rampUpTime); 
 }
 
@@ -147,13 +151,13 @@ void doRampUp(double endPoint_uV, long width_us)
      startTime_us = timeSinceLastV_us;
   }
   unsigned long incrementTime_us = 0;
-  while (incrementTime_us < width_us) {
+  while (incrementTime_us <= width_us) {
      if (DAC == DA) {
         incrementTime_us = (timeSinceLastA_us - startTime_us); 
      } else {
         incrementTime_us = (timeSinceLastV_us - startTime_us); 
      }
-     float currentVoltage_uV = increment_uVperus * incrementTime_us;
+     float currentVoltage_uV = abs(increment_uVperus * incrementTime_us);
      updateDACVoltage(currentVoltage_uV);
   }
 }
@@ -167,7 +171,7 @@ void squareWave(double endPoint_uV, long width_us)
      startTime_us = timeSinceLastV_us;
   }
   unsigned long incrementTime_us = 0;
-    while (incrementTime_us < width_us) {
+    while (incrementTime_us <= width_us) {
      if (DAC == DA) {
         incrementTime_us = (timeSinceLastA_us - startTime_us); 
      } else {
@@ -187,7 +191,7 @@ void doRampDown(double startPoint_uV, long width_us)
     startTime_us = timeSinceLastBPM_us + interval_a + av_interval; 
   }
   unsigned long incrementTime_us = 0;
-  while(incrementTime_us < width_us){
+  while(incrementTime_us <= width_us){
      if (DAC == DA) {
       incrementTime_us = (timeSinceLastBPM_us - startTime_us);
      } else {

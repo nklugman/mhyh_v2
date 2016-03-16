@@ -23,7 +23,7 @@ double amplitude_a = 4095;
 unsigned long interval_a = 15000;
 double amplitude_v = 4095;
 unsigned long interval_v = 15000;
-unsigned long av_interval = 100000;
+unsigned long av_interval = 80000;
 unsigned long va_interval = 200000;
 
 void setup() {

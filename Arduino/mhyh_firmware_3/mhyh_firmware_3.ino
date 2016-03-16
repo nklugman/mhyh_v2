@@ -22,12 +22,17 @@ bool contact = false;
 int PACKET_LENGTH = 7;
 char start_bit = 's';
 unsigned long bpm = 400000; //400ms
-double amplitude_a = 50000;
-unsigned long interval_a = 50000;
+double amplitude_a = 10000;
+unsigned long interval_a = 15000;
 double amplitude_v = 10000;
-unsigned long interval_v = 50000;
-unsigned long av_interval = 100000;
-unsigned long va_interval = 200000;
+unsigned long interval_v = 15000;
+
+unsigned long va = 160;
+unsigned long av = 840;
+
+unsigned long av_interval = av * 1000 - 30;
+unsigned long va_interval = va * 1000 - 30;
+
 
 
 char end_bit = 'e';
@@ -51,12 +56,16 @@ int p1 = 2;
 bool on1 = false;
 int p2 = 3;
 bool on2 = false;
+int p3 = 8;
+bool on3 = false;
+
 
 // Setup GPIO's and Pins
 void setup() {
   Serial.begin(57600);
   pinMode(p1, OUTPUT);
   pinMode(p2, OUTPUT);
+  pinMode(p3, OUTPUT);
   dacA.begin(0x63);
   dacV.begin(0x62);
   initInterrupt();
@@ -83,7 +92,6 @@ ISR(TIMER1_COMPA_vect) {
   timeSinceLastBPM_us      += 10;   
   timeSinceLastA_us        += 10;
   timeSinceLastV_us        += 10;
-
 }
 
 
@@ -91,11 +99,17 @@ ISR(TIMER1_COMPA_vect) {
 // Move through execution state
 void loop() {
 
-
+  if (on3) {
+    on3 = !on3;
+    digitalWrite(p3,HIGH);
+  } else {
+    on3 = !on3;
+    digitalWrite(p3,LOW);
+  }
 
    //checkAndDoPulse(); //Generate voltages
-   VA_test();
-   updateDACVoltage(0);
+  VA_test();
+  updateDACVoltage(0);
 
 /*
    
@@ -132,7 +146,7 @@ void test_pulseEverySecond()
    doRampUp(20000, 20000);
    updateDACVoltage(0);
  }
-  if(timeSinceLastV_us > 1000000){
+ if(timeSinceLastV_us > 1000000){
    doRampUp(20000, 20000);
    updateDACVoltage(0);
  }
